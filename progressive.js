@@ -38,7 +38,7 @@ var Progressive = (function () {
 			onNodeInserted = function (e) {
 				var enhancement = enhancements[e.animationName];
 				if (enhancement) {
-					enhancement.callback(e);
+					enhancement.callback.call(e.target);
 				}
 			};
 			for (enhancement in enhancements) {
