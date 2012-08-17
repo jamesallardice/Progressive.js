@@ -80,8 +80,8 @@ var Progressive = (function () {
 		// This is used as a callback to the CSS animation events. It's used to fire the supplied enhancements, in the context of each element
 		onNodeInserted = function (e) {
 			var enhancement = enhancements[e.animationName];
-			enhancement.count = ++enhancement.count || 1;
 			if (enhancement) {
+				enhancement.count = ++enhancement.count || 1;
 				enhancement.callback.call(e.target);
 			}
 		};
