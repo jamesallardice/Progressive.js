@@ -11,7 +11,7 @@ var Progressive = (function () {
 	var styleElem = document.createElement("style"),
 		animationSupport = false,
 		animationString,
-		keyframePrefix,
+		keyframePrefix = "",
 		domPrefixes = ["Webkit", "Moz", "O", "ms", "Khtml"],
 		numPrefixes = domPrefixes.length,
 		prefix,
