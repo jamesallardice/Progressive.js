@@ -33,6 +33,7 @@ Progressive.js relies on a technique discovered and demonstrated by [Daniel Buch
 - Chrome 4+
 - Firefox 5+
 - Safari 4+
+- Opera 12+
 - Internet Explorer 10
 
 ##Known issues
