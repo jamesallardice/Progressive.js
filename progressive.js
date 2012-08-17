@@ -51,17 +51,17 @@ var Progressive = (function () {
 			styleRules = {},
 			enhancement,
 			onNodeInserted,
-			enhanced = 0,
 			fallback = function () {
 				var enhancement,
 					elems,
 					numElems,
 					i;
-				if (!enhanced) {
-					for (enhancement in enhancements) {
-						if (enhancements.hasOwnProperty(enhancement)) {
-							elems = document.getElementsByClassName(enhancements[enhancement].className);
-							for (i = 0, numElems = elems.length; i < numElems; i++) {
+				for (enhancement in enhancements) {
+					if (enhancements.hasOwnProperty(enhancement)) {
+						elems = document.getElementsByClassName(enhancements[enhancement].className);
+						numElems = elems.length;
+						if (!enhancements[enhancement].count || enhancements[enhancement].count < numElems) {
+							for (i = 0; i < numElems; i++) {
 								enhancements[enhancement].callback.call(elems[i]);
 							}
 						}
@@ -71,7 +71,7 @@ var Progressive = (function () {
 		ruleText = "";
 		onNodeInserted = function (e) {
 			var enhancement = enhancements[e.animationName];
-			enhanced++;
+			enhancement.count = ++enhancement.count || 1;
 			if (enhancement) {
 				enhancement.callback.call(e.target);
 			}
