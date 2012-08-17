@@ -51,13 +51,13 @@ var Progressive = (function () {
 			styleRules = {},
 			enhancement,
 			onNodeInserted,
-			callbackRun = false,
+			enhanced = 0,
 			fallback = function () {
 				var enhancement,
 					elems,
 					numElems,
 					i;
-				if (!callbackRun) {
+				if (!enhanced) {
 					for (enhancement in enhancements) {
 						if (enhancements.hasOwnProperty(enhancement)) {
 							elems = document.getElementsByClassName(enhancements[enhancement].className);
@@ -71,37 +71,40 @@ var Progressive = (function () {
 		ruleText = "";
 		onNodeInserted = function (e) {
 			var enhancement = enhancements[e.animationName];
-			callbackRun = true;
+			enhanced++;
 			if (enhancement) {
 				enhancement.callback.call(e.target);
 			}
 		};
-		for (enhancement in enhancements) {
-			if (enhancements.hasOwnProperty(enhancement)) {
-				ruleText += "." + enhancements[enhancement].className + "{";
-				ruleText += keyframePrefix + "animation-duration:0.001s;";
-				ruleText += keyframePrefix + "animation-name:" + enhancement + ";";
-				ruleText += "}";
-				ruleText += "@" + keyframePrefix + "keyframes " + enhancement + "{from{opacity:99%;}to{opacity:100%;}}";
+
+		if (animationSupport) {
+			for (enhancement in enhancements) {
+				if (enhancements.hasOwnProperty(enhancement)) {
+					ruleText += "." + enhancements[enhancement].className + "{";
+					ruleText += keyframePrefix + "animation-duration:0.001s;";
+					ruleText += keyframePrefix + "animation-name:" + enhancement + ";";
+					ruleText += "}";
+					ruleText += "@" + keyframePrefix + "keyframes " + enhancement + "{from{clip:rect(1px,auto,auto,auto);}to{clip:rect(0px,auto,auto,auto);}}";
+				}
 			}
-		}
 
-		styleRules = document.createTextNode(ruleText);
-		styleElem.type = "text/css";
+			styleRules = document.createTextNode(ruleText);
+			styleElem.type = "text/css";
+			if (styleElem.styleSheet) {
+				styleElem.styleSheet.cssText = styleRules.nodeValue;
+			} else {
+				styleElem.appendChild(styleRules);
+			}
 
-		if (styleElem.styleSheet) {
-			styleElem.styleSheet.cssText = styleRules.nodeValue;
-		} else {
-			styleElem.appendChild(styleRules);
-		}
+			document.getElementsByTagName("script")[0].parentNode.appendChild(styleElem);
 
-		document.getElementsByTagName("script")[0].parentNode.appendChild(styleElem);
-
-		if (window.addEventListener) {
 			document.addEventListener("animationstart", onNodeInserted, false);
+			document.addEventListener("oanimationstart", onNodeInserted, false);
 			document.addEventListener("MSAnimationStart", onNodeInserted, false);
 			document.addEventListener("webkitAnimationStart", onNodeInserted, false);
-			document.addEventListener("oanimationstart", onNodeInserted, false);
+		}
+
+		if (window.addEventListener) {
 			window.addEventListener("load", fallback);
 		} else if (window.attachEvent) {
 			window.attachEvent("onload", fallback);
