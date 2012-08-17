@@ -26,6 +26,8 @@ The object can have any number of properties, with arbitrary keys. The keys are 
 
 The value of each enhancement must be another object, with two properties. The `className` property is simply the name of a class that is present on elements to which this enhancement should be applied. The `callback` property is a function that will be run every time an element with a matching class name is inserted into the DOM.
 
+If you want to see the script in action, [check out this simple example](http://www.jamesallardice.com/progressivejs-example1/).
+
 ##Browser support
 
 Progressive.js relies on a technique discovered and demonstrated by [Daniel Buchner](http://www.backalleycoder.com/) and [David Walsh](http://davidwalsh.name/). That technique involves CSS animations, which are supported in a growing number of modern browsers. For all other browsers, Progressive.js falls back to the standard `load` event of the `window` object, so you don't need to write code twice. The following is a list of browsers that will fully benefit from the use of Progressive.js:
