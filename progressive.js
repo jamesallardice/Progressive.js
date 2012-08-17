@@ -57,11 +57,13 @@ var Progressive = (function () {
 					elems,
 					numElems,
 					i;
-				for (enhancement in enhancements) {
-					if (enhancements.hasOwnProperty(enhancement)) {
-						elems = document.getElementsByClassName(enhancements[enhancement].className);
-						for (i = 0, numElems = elems.length; i < numElems; i++) {
-							enhancements[enhancement].callback.call(elems[i]);
+				if (!callbackRun) {
+					for (enhancement in enhancements) {
+						if (enhancements.hasOwnProperty(enhancement)) {
+							elems = document.getElementsByClassName(enhancements[enhancement].className);
+							for (i = 0, numElems = elems.length; i < numElems; i++) {
+								enhancements[enhancement].callback.call(elems[i]);
+							}
 						}
 					}
 				}
