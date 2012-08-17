@@ -1,3 +1,7 @@
+/*****************************************
+Progressive.js v0.1 - Brought to you by James Allardice (@james_allardice) and Keith Clark (@keithclarkcouk), freely distributable under the terms of the MIT license.
+******************************************/
+
 /*jslint browser: true, plusplus: true */
 
 var Progressive = (function () {
@@ -14,6 +18,7 @@ var Progressive = (function () {
 		enhance,
 		i;
 
+	// Polyfill `getElementsByClassName`, which is used by the fallback method
 	document.getElementsByClassName = document.getElementsByClassName || function (className) {
 		var classElements = [],
 			els,
@@ -32,6 +37,7 @@ var Progressive = (function () {
 		return classElements;
 	};
 
+	// Feature/vendor prefix detection for CSS animations
 	if (styleElem.style.animationName) {
 		animationSupport = true;
 	} else {
@@ -46,11 +52,13 @@ var Progressive = (function () {
 		}
 	}
 
+	// The main `enhance` method to register callbacks that will be executed when certain DOM elements are inserted
 	enhance = function (enhancements) {
 		var ruleText,
 			styleRules = {},
 			enhancement,
 			onNodeInserted,
+			// The fallback function is executed on window load. It will handle any elements not handled by the animation callbacks
 			fallback = function () {
 				var enhancement,
 					elems,
@@ -69,6 +77,7 @@ var Progressive = (function () {
 				}
 			};
 		ruleText = "";
+		// This is used as a callback to the CSS animation events. It's used to fire the supplied enhancements, in the context of each element
 		onNodeInserted = function (e) {
 			var enhancement = enhancements[e.animationName];
 			enhancement.count = ++enhancement.count || 1;
@@ -78,6 +87,7 @@ var Progressive = (function () {
 		};
 
 		if (animationSupport) {
+			// Build up a set of CSS rules to run animations on newly inserted elements
 			for (enhancement in enhancements) {
 				if (enhancements.hasOwnProperty(enhancement)) {
 					ruleText += "." + enhancements[enhancement].className + "{";
@@ -98,12 +108,14 @@ var Progressive = (function () {
 
 			document.getElementsByTagName("script")[0].parentNode.appendChild(styleElem);
 
+			// Register cross-browser CSS animation event handlers
 			document.addEventListener("animationstart", onNodeInserted, false);
 			document.addEventListener("oanimationstart", onNodeInserted, false);
 			document.addEventListener("MSAnimationStart", onNodeInserted, false);
 			document.addEventListener("webkitAnimationStart", onNodeInserted, false);
 		}
 
+		// Register fallback event handlers
 		if (window.addEventListener) {
 			window.addEventListener("load", fallback);
 		} else if (window.attachEvent) {
@@ -111,6 +123,7 @@ var Progressive = (function () {
 		}
 	};
 
+	// Expose public methods
 	return {
 		enhance: enhance
 	};
