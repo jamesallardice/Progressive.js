@@ -91,8 +91,7 @@ var Progressive = (function () {
 			for (enhancement in enhancements) {
 				if (enhancements.hasOwnProperty(enhancement)) {
 					ruleText += "." + enhancements[enhancement].className + "{";
-					ruleText += keyframePrefix + "animation-duration:0.001s;";
-					ruleText += keyframePrefix + "animation-name:" + enhancement + ";";
+					ruleText += keyframePrefix + "animation:" + enhancement + " 0.001s;";
 					ruleText += "}";
 					ruleText += "@" + keyframePrefix + "keyframes " + enhancement + "{from{clip:rect(1px,auto,auto,auto);}to{clip:rect(0px,auto,auto,auto);}}";
 				}
