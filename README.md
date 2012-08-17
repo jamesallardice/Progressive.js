@@ -1,6 +1,13 @@
 # Progressive.js
 
-Progressive.js is a simple JavaScript library that allows you to interact with DOM elements before the DOM is reported to be "ready". You could, for example, replace `<select>` elements with custom structures to provide an enhanced user experience. With Progressive.js, you can eliminate the annoying flash of unstyled content that occurs during the time between rendering and JavaScript running on DOM load.
+Progressive.js is a simple JavaScript library that allows you to interact with DOM elements before the DOM is reported to be "ready". You could, for example, replace `<select>` elements, or checkboxes, which are notoriously difficult to style, with custom structures to provide an enhanced user experience.
+
+## What does it do?
+
+As mentioned previously, Progressive.js allows you to interact with DOM elements before the DOM has finished loading. Normally, you would need to wait until the DOM is ready before attempting to select or modify an element, since that element may not exist until that point. Progressive.js will execute a callback function any time elements with specific class names are added to the DOM. Therefore, it allows you to achieve two main things:
+
+- Minimize flashes of unstyled content that appear for the time between page render and JavaScript execution on DOM ready
+- Automatically apply JavaScript to elements that are dynamically inserted into the DOM later on
 
 ## How do I use it?
 
